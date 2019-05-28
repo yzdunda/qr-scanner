@@ -35,8 +35,8 @@ export default {
       let mahasiswa = {
         name: this.name,
         userId: this.userId,
-        presenceId: decoded.presenceId,
-        presencenumber: decoded.presencenumber
+        presenceId: decoded.data.presenceId,
+        presencenumber: decoded.data.presencenumber
       }
 
       axios({
