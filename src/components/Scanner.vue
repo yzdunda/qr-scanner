@@ -1,6 +1,6 @@
 <template>
   <div class="scanner">
-    <qrcode-stream @decode="onDecode" v-if="scanner == true"></qrcode-stream>
+    <qrcode-stream @detect="onDetect" v-if="scanner == true"></qrcode-stream>
     <pulse-loader v-if="loading == true"></pulse-loader>
     <p> {{ successMsg  }} </p>
     <p>{{ errorMsg }}</p>
@@ -30,37 +30,39 @@ export default {
     PulseLoader
   },
   methods: {
-    onDecode(decoded) {
-      let mahasiswa = {
-        name: this.name,
-        userId: this.userId,
-        presenceId: decoded.data.presenceId,
-        presencenumber: decoded.data.presencenumber
-      }
-      if (decoded != null) {
-        this.pushPresence(mahasiswa)
-      } else {
-        this.errorMsg = "QR Code tidak dapat terbaca"
-      }
-    },
+    async onDetect (promise) {
+      try {
+          
+          await promise
 
-    pushPresence(mahasiswa) {
-      this.loading = true;
+          let mahasiswa = {
+            name: this.name,
+            userId: this.userId,
+            presenceId: promise.data.presenceId,
+            presencenumber: promise.data.presencenumber
+          }
 
-      axios({
-        method: 'post',
-        url: 'https://fathomless-hollows-37188.herokuapp.com/users/presence',
-        data: mahasiswa
-      })
-      .then(response => {
-        this.scanner = false
-        this.loading = false
-        this.successMsg = response
-      })
-      .catch(error => {
-        this.loading = false
-        this.errorMsg = error
-      })
+          this.loading = true;
+    
+          axios({
+            method: 'post',
+            url: 'https://fathomless-hollows-37188.herokuapp.com/users/presence',
+            data: mahasiswa
+          })
+          .then(response => {
+            this.scanner = false
+            this.loading = false
+            this.successMsg = response
+          })
+          .catch(error => {
+            this.loading = false
+            this.errorMsg = error
+          })
+
+        } catch (error) {
+          this.errorMsg = error;
+        }
+
     }
   }
 }
