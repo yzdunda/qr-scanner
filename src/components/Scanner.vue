@@ -47,24 +47,24 @@ export default {
         let mahasiswa = {
             name: this.name,
             userId: this.userId,
-            presenceId: this.rspn.presenceId,
-            presencenumber: this.rspn.presencenumber
+            presenceId: this.rspn.presenceid,
+            presenceNumber: this.rspn.presencenumber
           }
 
-          axios({
-            method: 'post',
-            url: 'https://fathomless-hollows-37188.herokuapp.com/users/presence',
-            data: mahasiswa
-          })
-          .then(response => {
-            this.scanner = false
-            this.loading = false
-            this.successMsg = response
-          })
-          .catch(error => {
-            this.loading = false
-            this.errorMsg = error
-          })
+        axios({
+          method: 'post',
+          url: 'https://fathomless-hollows-37188.herokuapp.com/users/presence',
+          data: mahasiswa
+        })
+        .then(response => {
+          this.scanner = false
+          this.loading = false
+          this.successMsg = response
+        })
+        .catch(error => {
+          this.loading = false
+          this.errorMsg = error
+        })
       }
 
     }
