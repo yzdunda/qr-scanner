@@ -2,7 +2,7 @@
   <div class="scanner">
     <qrcode-stream @decode="onDecode" v-if="scanner == true"></qrcode-stream>
     <pulse-loader v-if="loading == true"></pulse-loader>
-    <p> {{ name }} - {{ successMsg  }} </p>
+    <p> {{ successMsg  }} </p>
     <p>{{ errorMsg }}</p>
   </div>
 </template>
@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     onDecode(decoded) {
-      this.loading = true;
       let mahasiswa = {
         name: this.name,
         userId: this.userId,
@@ -42,6 +41,8 @@ export default {
     },
 
     pushPresence(mahasiswa) {
+      this.loading = true;
+
       axios({
         method: 'post',
         url: 'https://fathomless-hollows-37188.herokuapp.com/users/presence',
