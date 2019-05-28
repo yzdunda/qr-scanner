@@ -1,6 +1,6 @@
 <template>
   <div class="scanner">
-    <qrcode-stream @decode="onDecode"></qrcode-stream>
+    <qrcode-stream @decode="onDecode" v-if="scanner == true"></qrcode-stream>
     <pulse-loader v-if="loading == true"></pulse-loader>
     <p> {{ successMsg  }} </p>
     <p>{{ errorMsg }}</p>
@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       decodedString: '',
+      scanner: true,
       loading: false,
       name: "Ghiant Masua Khols",
       userId: 400364,
@@ -44,11 +45,13 @@ export default {
         data: mahasiswa
       })
       .then(response => {
-        this.loading = false;
-        this.successMsg = response;
+        this.scanner = false
+        this.loading = false
+        this.successMsg = response
       })
       .catch(error => {
-        this.errorMsg = error;
+        this.loading = false
+        this.errorMsg = error
       })
 
 
