@@ -21,6 +21,7 @@ export default {
       loading: false,
       name: "Ghiant Masua Khols",
       userId: 400364,
+      rspn: '',
       successMsg: '',
       errorMsg: ''
     }
@@ -31,19 +32,25 @@ export default {
   },
   methods: {
     async onDetect (promise) {
-      try {
-          
-          await promise
 
-          let mahasiswa = {
+      try {
+        let response = await promise
+        let responseContent = response.content
+        let rspn = JSON.parse(responseContent)
+        this.rspn = rspn
+      } catch (error) {
+        this.errorMsg = error;
+      } finally {
+        this.loading = true
+        this.scanner = false
+
+        let mahasiswa = {
             name: this.name,
             userId: this.userId,
-            presenceId: promise.data.presenceId,
-            presencenumber: promise.data.presencenumber
+            presenceId: this.rspn.presenceId,
+            presencenumber: this.rspn.presencenumber
           }
 
-          this.loading = true;
-    
           axios({
             method: 'post',
             url: 'https://fathomless-hollows-37188.herokuapp.com/users/presence',
@@ -58,10 +65,7 @@ export default {
             this.loading = false
             this.errorMsg = error
           })
-
-        } catch (error) {
-          this.errorMsg = error;
-        }
+      }
 
     }
   }
