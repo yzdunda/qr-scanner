@@ -37,7 +37,11 @@ export default {
         presenceId: decoded.data.presenceId,
         presencenumber: decoded.data.presencenumber
       }
-      this.pushPresence(mahasiswa)
+      if (decoded != null) {
+        this.pushPresence(mahasiswa)
+      } else {
+        this.errorMsg = "QR Code tidak dapat terbaca"
+      }
     },
 
     pushPresence(mahasiswa) {
