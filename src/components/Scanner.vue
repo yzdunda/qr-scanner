@@ -2,7 +2,7 @@
   <div class="scanner">
     <qrcode-stream @detect="onDetect" v-if="scanner == true"></qrcode-stream>
     <pulse-loader v-if="loading == true"></pulse-loader>
-    <p> {{ successMsg  }} </p>
+    <h2 v-show="successMsg !== ''"> {{ successMsg  }} &#128591; </h2>
     <p>{{ errorMsg }}</p>
   </div>
 </template>
@@ -44,22 +44,25 @@ export default {
         this.loading = true
         this.scanner = false
 
-        let mahasiswa = {
+        var mahasiswa = {
             name: this.name,
             userId: this.userId,
-            presenceId: this.rspn.presenceid,
-            presenceNumber: this.rspn.presencenumber
+            presenceId: this.rspn.presenceId,
+            presenceNumber: this.rspn.presenceNumber
           }
-
+        
         axios({
           method: 'post',
           url: 'https://fathomless-hollows-37188.herokuapp.com/users/presence',
-          data: mahasiswa
+          data: mahasiswa,
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
         .then(response => {
-          this.scanner = false
           this.loading = false
-          this.successMsg = response
+          this.successMsg = `${response.data.data.name} - ${response.data.message}`
+          console.log(response) /* eslint-disable-line no-console */
         })
         .catch(error => {
           this.loading = false

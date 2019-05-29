@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h2>QR Scanner</h2>
+    <h1><u>QR Scanner</u></h1>
     <Scanner />
   </div>
 </template>
